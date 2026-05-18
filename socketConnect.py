@@ -36,7 +36,9 @@ class SocketConnection:
     # Getting file contents
     def getting_file_contents(self,path):
         with open(path, "rb") as my_file:
-            return my_file.read()
+            file_bytes = my_file.read()
+            return base64.b64encode(file_bytes).decode() # Returns string
+            #return base64.b64encode(my_file.read()).decode('ascii')
 
     def start_socket(self):
         while True: # Create infinite loop of execution of commands
