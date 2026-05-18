@@ -2,6 +2,7 @@ import socket
 import subprocess
 import json
 import os
+import base64
 
 class SocketConnection:
     def __init__(self,ip,port):
