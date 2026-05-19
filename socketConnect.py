@@ -42,9 +42,13 @@ class SocketConnection:
             #return base64.b64encode(my_file.read()).decode('ascii')
 
     # Uploading files to Target
-    def save_file(self,path,content):
+    def save_file(self, path, content):
         try:
-            with open(path,"wb") as my_file:
+            with open(path, "wb") as my_file:
+                # Convert string to bytes if needed, then encode
+                if isinstance(content, str):
+                    content = content.encode() # String -> bytes
+                    # Now content is bytes, encode to base64
                 my_file.write(base64.b64encode(content))
                 return "Uploaded successfully"
         except Exception:
