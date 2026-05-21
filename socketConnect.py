@@ -37,19 +37,13 @@ class SocketConnection:
     # Downloading file contents
     def getting_file_contents(self,path):
         with open(path, "rb") as my_file:
-            file_bytes = my_file.read()
-            return base64.b64encode(file_bytes).decode() # Returns string
-            #return base64.b64encode(my_file.read()).decode('ascii')
+            return base64.b64encode(my_file.read()).decode() # Returns string
 
     # Uploading files to Target
     def save_file(self, path, content):
         try:
             with open(path, "wb") as my_file:
-                # Convert string to bytes if needed, then encode
-                if isinstance(content, str):
-                    content = content.encode() # String -> bytes
-                    # Now content is bytes, encode to base64
-                my_file.write(base64.b64encode(content))
+                my_file.write(base64.b64decode(content))
                 return "Uploaded successfully"
         except Exception:
             return "Error uploading file"
